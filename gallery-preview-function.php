@@ -23,7 +23,7 @@ function display_header_options_content(){
             <input id="margin-between" min="0" max="100" step=".5" type="number" value="10" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
             </div>
             <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;">
-            <input type="color" id="colorpicker" disabled="disabled" style=" height: 30px; border: 1px solid #9c9c9c; " name="color" value="#bada55">
+            <button id="colorpicker" disabled="disabled" style="height: 30px;border: 1px solid #9c9c9c;width: 36px;border-radius: 6px;" name="color" style="background-color: rgb(255, 215, 0);padding: 8px 15px;" onclick="return false;"></button>
             <fieldset style="margin-left: 8px;">
             <input id="check01" type="checkbox" checked="checked" name="checkbox" class="checkbox" value="1"> <label>No Background</label>
             </fieldset>
@@ -34,6 +34,9 @@ function display_header_options_content(){
             </div>
             <a id="addWidget" class="btn btn-primary" href="#" >Add Widget</a>
             <a id="ResetWidget" onclick="clearGrid()" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Clear !</a>
+            <a id="exportlayout"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Export Layout</a>
+            <a id="importlayout" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">import layout</a>
+            <input type="file" id="theFile" style=" display: none; "/>
             </div>
 
             <!-- Second Toolbar -->
@@ -66,7 +69,7 @@ function display_header_options_content(){
         $return .= '<b style="color: white;background-color: #ffbc00;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">CLONED</b>';
          }
          $return .= '</p>
-         <p>[gallery-editor-V2 id="'.$Galleries[$i]['_id'].'"]</p>
+         <p  style=" cursor: pointer; " class="shortcode-code" onclick="copyShortcode(this.innerHTML,this)">[gallery-editor-V2 id="'.$Galleries[$i]['_id'].'"]</p>
          <p>Created At : <b>'.$Galleries[$i]['createdAt'].'</b></p>
          <p>Widgets : <b>'.count($Galleries[$i]['images']).'</b></p>
          <a gallery-id="'.$Galleries[$i]['_id'].'" class="item-gallery-grid-edit" href="#" >Edit</a>';
@@ -87,7 +90,7 @@ function display_header_options_content(){
      
       </script>
       <script src="'.plugin_dir_url(__FILE__).'/assets/js/grid-layout-script.js"></script>
-     
+      <script src="'.plugin_dir_url(__FILE__).'/assets/js/vanilla-picker.js"></script>
       <!--TO BE MODIFIED FOR FRONT EEEEEEEEEEEEEEENNNNNNNNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDDD ########################################################################## -->
       <script>//const a'.$id_gallery.' = new ImgPreviewer("#grid-stack'.$id_gallery.'") </script>';
   }
@@ -134,6 +137,21 @@ function display_header_options_content(){
     $my_saved_attachment_post_id = get_option( 'media_selector_attachment_id', 0 );
   
     ?><script type='text/javascript'>
+
+
+function copyShortcode(text,thi) {
+   const elem = document.createElement('textarea');
+   elem.value = text;
+   document.body.appendChild(elem);
+   elem.select();
+   document.execCommand('copy');
+   document.body.removeChild(elem);
+   thi.innerHTML = 'COPIED !'
+   setTimeout(() => {
+    thi.innerHTML = text;
+   }, 1800);
+}
+
 let changeImageGallery = (grId) => {
 
     var custom_uploader;
@@ -229,14 +247,25 @@ String.prototype.splice = function(idx, rem, str) {
 
 
 
+var shortcodearray = []
 
 
-
-
+let removeshortcode = (parent,id) => {
+    grid.removeWidget(parent)
+    console.log(id)
+    for( var i = 0; i < shortcodearray.length; i++){ 
+                                   
+                 if ( shortcodearray[i].id == id) { 
+                    shortcodearray.splice(i, 1); 
+                         i--; 
+                         }
+             }
+             console.log(shortcodearray)
+}
 
 jQuery(document).ready(function($) {
     var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
-    var shortcodearray = []
+    
     var x = document.getElementById("gallerytoolbar2");
     var backgroundcheckbox = false;
     var backgroundColor = '';
@@ -432,7 +461,11 @@ jQuery(document).ready(function($) {
         jQuery('#createdAt').text(time);
         jQuery('#updatedAt').text(time);
         jQuery('#timebar').css('display', '');
-
+        document.getElementById("colorpicker").disabled = true;
+                    document.getElementById("colorpicker").style.backgroundColor = '';
+                    document.getElementById("check01").checked = true;
+                    jQuery('div#grid-stack0').css('background-color', '');
+                    backgroundColor = ''
     });
 
     jQuery("#Cancel").on('click', function(e) {
@@ -461,6 +494,7 @@ jQuery(document).ready(function($) {
         jQuery('#timebar').css('display', 'none');
         jQuery('#creategalle').css('display','');
         jQuery('#bartoolsearchandfilter').css('display','flex');
+        jQuery('#gallerytoolbar2').css('display','none');
         shortcodearray = [];
     });
 
@@ -525,7 +559,7 @@ jQuery(document).ready(function($) {
                                 ` onclick="changeVideoGallery(this.parentNode.parentNode.getAttribute('gs-id'))"`
                             );
                         }else{
-                            layout[index].content = `<button onClick="grid.removeWidget(this.parentNode.parentNode)" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div shortcodeid="${layout[index].id}" class="shortcodeinput">
+                            layout[index].content = `<button onClick="removeshortcode(this.parentNode.parentNode,'${layout[index].id}')" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div shortcodeid="${layout[index].id}" class="shortcodeinput">
     <input type="text" id="${layout[index].id}" value ="${previouscontent}" placeholder="Paste here your shortcode" class="inputshort">
     <a id="${layout[index].id}" class="preview-shortcode-gal">SAVE</a>
 </div>`;
@@ -558,9 +592,15 @@ jQuery(document).ready(function($) {
                 }
                 if (gallery.background) {
                     document.getElementById("colorpicker").disabled = false;
-                    document.getElementById("colorpicker").value = gallery.background;
+                    document.getElementById("colorpicker").style.backgroundColor = gallery.background;
                     document.getElementById("check01").checked = false;
                     jQuery('div#grid-stack0').css('background-color', gallery.background);
+                }else{
+                    document.getElementById("colorpicker").disabled = true;
+                    document.getElementById("colorpicker").style.backgroundColor = '';
+                    document.getElementById("check01").checked = true;
+                    jQuery('div#grid-stack0').css('background-color', '');
+                    backgroundColor = ''
                 }
                 jQuery('#description').val(gallery.description);
                 jQuery('#createdAt').text(gallery.createdAt);
@@ -594,6 +634,7 @@ jQuery(document).ready(function($) {
         })
     });
 
+
     setInterval(function () {
         var nbrshortcodefinal = jQuery('input[id^=shortcode]').length
         if(nbrshortcodefinal != shortcodearray.length){
@@ -601,20 +642,7 @@ jQuery(document).ready(function($) {
         }else{
             jQuery('input[type=submit]').attr('disabled',false)
         }
-
-        
-
-        for (let index = 0; index < shortcodearray.length; index++) {
-            var iter = jQuery('input[id^='+shortcodearray[index]['id']+']')
-            //console.log(shortcodearray)
-            //console.log(jQuery('input[id^='+shortcodearray[index]['id']+']'))
-           //console.log(iter.length);
-            if(iter.length == 0){
-                shortcodearray = shortcodearray.splice(index, 1);
-              
-            }
-                    }
-  }, 2000);
+  }, 200);
  
 
     
@@ -710,10 +738,21 @@ jQuery(document).ready(function($) {
         })
     });
 
-    jQuery('#colorpicker').on('input', function() {
-        jQuery('div#grid-stack0').css('background-color', this.value);
-        backgroundColor = this.value;
-    });
+
+    var parent = document.querySelector('#colorpicker');
+        var picker = new Picker({
+            parent: parent,
+            onChange: function (color) {
+                parent.style.backgroundColor = color.rgbaString;
+                jQuery('div#grid-stack0').css('background-color', color.rgbaString);
+        backgroundColor = color.rgbaString;
+            },
+        });
+    // jQuery('#colorpicker').on('input', function() {
+    //     jQuery('div#grid-stack0').css('background-color', this.value);
+    //     backgroundColor = this.value;
+    // });
+
 
     jQuery(".checkbox").change(function() {
         if (this.checked) {
@@ -769,7 +808,7 @@ jQuery(document).ready(function($) {
                                 } else if (gallery[index]['updatedAt'] == 'COPIED') {
                                     content += tagCopied;
                                 }
-                                content += '</p><p>[gallery-editor-V2 id="' + gallery[index]
+                                content += '</p><p style=" cursor: pointer; "class="shortcode-code" onclick="copyShortcode(this.innerHTML,this)">[gallery-editor-V2 id="' + gallery[index]
                                     [
                                         '_id'
                                     ] + '"]</p><p>Created At : <b>' + gallery[index][
@@ -846,7 +885,7 @@ jQuery(document).ready(function($) {
                                 } else if (gallery[index]['updatedAt'] == 'COPIED') {
                                     content += tagCopied;
                                 }
-                                content += '</p><p>[gallery-editor-V2 id="' + gallery[index]
+                                content += '</p><p style=" cursor: pointer; "class="shortcode-code" onclick="copyShortcode(this.innerHTML,this)">[gallery-editor-V2 id="' + gallery[index]
                                     [
                                         '_id'
                                     ] + '"]</p><p>Created At : <b>' + gallery[index][
@@ -877,6 +916,52 @@ jQuery(document).ready(function($) {
 
     });
 
+
+    function download(filename, text) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+
+    jQuery(document).on("click", "#exportlayout", function(e) {
+        e.preventDefault();
+    download( Date.now()+'.layout', JSON.stringify(grid.save()));
+    })
+
+    function performClick(elemId) {
+   var elem = document.getElementById(elemId);
+   if(elem && document.createEvent) {
+      var evt = document.createEvent("MouseEvents");
+      evt.initEvent("click", true, false);
+      elem.dispatchEvent(evt);
+   }
+   elem.onchange = e => { 
+   var file = e.target.files[0]; 
+   var reader = new FileReader();
+   reader.readAsText(file,'UTF-8');
+
+   // here we tell the reader what to do when it's done reading...
+   reader.onload = readerEvent => {
+      var content = JSON.parse(readerEvent.target.result)
+      grid.removeAll();
+      grid.load(content)
+      console.log( content )
+      elem.value = '';
+   }
+}
+}
+    jQuery(document).on("click", "#importlayout", function(e) {
+        e.preventDefault(); 
+        performClick('theFile')
+    })
 
 
 });

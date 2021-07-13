@@ -142,6 +142,62 @@ function Get_Style_Gallery($in){
       }';
     if ($in == 0){
         $return .='
+        #exportlayout:hover{
+            background-color: #eeeeee !important;
+        }
+        #importlayout:hover{
+            background-color: #eeeeee !important; 
+        }
+        #custom-toggler {
+            position: absolute;
+            padding: 1em;
+            font: inherit;
+        }
+
+        #main-color {
+            display: inline-block;
+            border: 4px dashed tomato;
+        }
+
+        #main-color .picker_sample,
+        #main-color .picker_done {
+            display: none;
+        }
+
+        .popup-parent {
+            position: absolute;
+            background: dodgerblue;
+            color: white;
+            padding: 10px 16px;
+            width: 100px;
+            font-family: sans-serif;
+            font-weight: 100;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        @media(max-width: 500px) {
+            .layout_default.picker_wrapper {
+                font-size: 7px;
+            }
+
+            .layout_default .picker_editor {
+                width: 100%;
+            }
+        }
+        .picker_wrapper.layout_default.popup.popup_right {
+            z-index: 9990;
+        }
+        p.shortcode-code {
+           
+            border-radius: 4px;
+            width: fit-content;
+            margin: auto;
+            padding: 0px 8px;
+        }
+        p.shortcode-code:hover{
+            background: #cfcfcf99;
+        }
         div#ReturnButton:hover {
             background-color: white !important;
         }

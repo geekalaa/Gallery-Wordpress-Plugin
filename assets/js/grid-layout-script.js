@@ -147,7 +147,7 @@ function addShortcodegal() {
     y: 0,
     w: 2,
     content:
-      '<button onclick="grid.removeWidget(this.parentNode.parentNode)" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div shortCodeId="' +
+      `<button onClick="removeshortcode(this.parentNode.parentNode,'${shortcodeId}')" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div shortCodeId="` +
       shortcodeId +
       '" class="shortcodeinput"><input type="text" id="' +
       shortcodeId +
@@ -175,6 +175,7 @@ serializedData = []
 loadGrid = function () {
   grid.removeAll()
   grid.load(serializedData, true) // update things
+  grid.float(true);
 }
 
 clearGrid = function () {
