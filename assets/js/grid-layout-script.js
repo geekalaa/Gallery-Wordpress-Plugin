@@ -20,11 +20,13 @@ let guid = () => {
     s4()
   )
 }
+
 var slider = document.getElementById('myRange')
 var nnumberofthemargin = document.getElementById('margin-between')
 
 var slideradius = document.getElementById('myRangeRadius')
 var nnumberoftheradius = document.getElementById('radius-input')
+
 
 var items = document.getElementsByClassName('grid-stack-item-content')
 var pluginrelativeUrl = window.pluginrelativeUrl
@@ -36,6 +38,8 @@ let grid = GridStack.init(
   },
   '.grid-stack2'
 ) // don't let it collapse when empty
+
+
 
 nnumberofthemargin.addEventListener('input', () => {
   document.getElementById('myRange').value = nnumberofthemargin.value
@@ -99,6 +103,9 @@ function addImage() {
     newItems[i].style.cssText += 'inset:' + nnumberofthemargin.value + 'px;'
     newItems[i].style.cssText +=
       'border-radius:' + nnumberoftheradius.value + 'px;'
+      if(bordersetting.enabled){
+        newItems[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+      }
     if (nnumberoftheradius.value >= 15) {
       newItems[i]
         .getElementsByTagName('button')[0]
@@ -129,6 +136,9 @@ function addVideo() {
     newItems[i].style.cssText += 'inset:' + nnumberofthemargin.value + 'px;'
     newItems[i].style.cssText +=
       'border-radius:' + nnumberoftheradius.value + 'px;'
+      if(bordersetting.enabled){
+        newItems[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+        }
     if (nnumberoftheradius.value >= 15) {
       newItems[i]
         .getElementsByTagName('button')[0]
@@ -162,6 +172,9 @@ function addShortcodegal() {
     newItems[i].style.cssText += 'inset:' + nnumberofthemargin.value + 'px;'
     newItems[i].style.cssText +=
       'border-radius:' + nnumberoftheradius.value + 'px;'
+      if(bordersetting.enabled){
+        newItems[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+        }
     if (nnumberoftheradius.value >= 15) {
       newItems[i]
         .getElementsByTagName('button')[0]
@@ -169,6 +182,51 @@ function addShortcodegal() {
     }
   }
 }
+
+
+
+
+//ADD VIDEO FROM YOUTUBE 
+function addYoutubecodegal() {
+  var YoutubecodeId = 'youtube'+guid()
+  clicked = true
+  document.getElementById('addWidget').style.animation = 'none'
+  grid.addWidget({
+    x: 0,
+    h: 2,
+    y: 0,
+    w: 2,
+    content:
+      `<button onClick="removeYoutubecode(this.parentNode.parentNode,'${YoutubecodeId}')" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div youtubeCodeId="` +
+      YoutubecodeId +
+      '" class="Youtubecodeinput"><input type="text" id="' +
+      YoutubecodeId +
+      '" placeholder="Paste here the video ID" class="inputyoutube"><a id="' +
+      YoutubecodeId +
+      '" class="preview-youtube-gal">SAVE</a></div>',
+    id: YoutubecodeId,
+  })
+  var newItems = document.getElementsByClassName('grid-stack-item-content')
+  for (var i = 0; i < newItems.length; i++) {
+    //   console.log(newItems.length);
+    newItems[i].style.cssText += 'inset:' + nnumberofthemargin.value + 'px;'
+    newItems[i].style.cssText +=
+      'border-radius:' + nnumberoftheradius.value + 'px;'
+      if(bordersetting.enabled){
+        newItems[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+        }
+    if (nnumberoftheradius.value >= 15) {
+      newItems[i]
+        .getElementsByTagName('button')[0]
+        .classList.add('removeWidgetcustomgallery')
+    }
+  }
+}
+
+
+
+
+
 
 serializedData = []
 

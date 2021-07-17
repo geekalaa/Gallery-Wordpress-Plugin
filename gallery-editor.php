@@ -240,6 +240,48 @@ input.inputshort {
 .preview-shortcode-gal:hover{
 background-color: white;
 }
+.Youtubecodeinput {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+input.inputyoutube {
+    width: 100%;
+}
+a.edit-youtubecode-gal {
+    margin-top: 8px;
+    padding: 5px;
+    background-color: #bebebe;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border: 1px solid #a7a7a7;
+    color: white;
+}
+
+a.edit-youtubecode-gal:hover{
+    background-color:white;
+    color:inherit;
+}
+a.preview-youtube-gal {
+    margin-top: 8px;
+    padding: 5px;
+    background-color: #bebebe;
+    text-decoration: none;
+    text-transform: uppercase;
+    border-radius: 6px;
+    border: 1px solid #a7a7a7;
+    color: white;
+}
+
+a.preview-youtube-gal:hover{
+    background-color: white;
+    color:inherit;
+}
         
         a#shortCodeAdd:hover {
             background-color: #eeeeee !important;
@@ -248,6 +290,9 @@ background-color: white;
         a#VideoAdd:hover {
         background-color: #eeeeee !important;
         }
+        a#youtubeAdd:hover {
+            background-color: #eeeeee !important;
+            }
         a#ImageAdd:hover {
         background-color: #eeeeee !important;
         }
@@ -448,15 +493,7 @@ return $return;
         ?>
 <div class="wrap">
     <div id="icon-options-general" class="icon32"></div>
-    <h1>Gallery Editor <b id="Gallerycount"
-            style="
-    border: 1px solid #aaaaaa;
-    border-radius: 7px;
-    padding-right: 5px;
-    font-size: 20px;
-    padding-left: 5px;
-    box-shadow: 1px 1px #898989;
-"><?php echo count(array_filter($gallery_costum-> get_all(), function($value) { return !is_null($value) && $value !== ''; })); ?></b>
+    <h1>Gallery Editor <b id="Gallerycount" style="border: 1px solid #aaaaaa;border-radius: 7px;padding-right: 5px;font-size: 20px;padding-left: 5px;box-shadow: 1px 1px #898989;"><?php echo count(array_filter($gallery_costum-> get_all(), function($value) { return !is_null($value) && $value !== ''; })); ?></b>
     </h1> <a
         style=" padding: 9px 9px; margin: 9px; background-color: white; border: 1px solid #aeaeae; border-radius: 5px; font-size: 18px; text-decoration: none; text-transform: uppercase; float: right; "
         href="#" id="creategalle">Create New Gallery</a>
@@ -545,10 +582,22 @@ function duplicategallery(){
     // echo is_array($jsonDataDecoded) ? 'true' : 'false';
     unset($jsonDataDecoded['key']);
     $jsonDataDecoded["_id"] = uniqid();
-    $jsonDataDecoded["title"] = $jsonDataDecoded["title"].'-COPIED';
+    // $jsonDataDecoded["title"] = $jsonDataDecoded["title"].'-COPIED';
     $jsonDataDecoded["updatedAt"] = 'COPIED';
     $data = $gallery_costum->insert_one_gallery($jsonDataDecoded);
-    echo json_encode($jsonDataDecoded["title"]);
+    $id = $jsonDataDecoded["_id"];
+    $title = $jsonDataDecoded['title'];
+    $margin = $jsonDataDecoded['margin'];
+    $images = $jsonDataDecoded['images'];
+    $background = $jsonDataDecoded['background'];
+    $description = $jsonDataDecoded['description'];
+    $radius = $jsonDataDecoded['radius'];
+    $maxwidth = $jsonDataDecoded['maxwidth'];
+    $bordersetting=$jsonDataDecoded['bordersetting'];
+    $globalradius = $jsonDataDecoded['globalradius'];
+    $quick_view_enabled = $jsonDataDecoded['quick_view_enabled'];
+    $data2 = $gallery_costum->updateById($id,$images,$margin,$title,$background,$description,'COPIED',$radius,$maxwidth,$bordersetting,$globalradius,$quick_view_enabled);
+    echo json_encode($data2);
  
     wp_die();   
 }
@@ -572,7 +621,11 @@ function ping1() {
         "radius" => $_POST['radius'],
         "background" => $_POST['background'],
         "description" => $_POST['description'],
+        "maxwidth" => $_POST['maxwidth'],
         "createdAt"=>date("Y-m-d h:i:sa"),
+        "bordersetting"=>$_POST['bordersetting'],
+        "globalradius"=>$_POST['globalradius'],
+        "quick_view_enabled"=>$_POST['quick_view_enabled'],
         "updatedAt"=>''
        ];
  
@@ -594,8 +647,12 @@ wp_die();
     $background = $_POST['background'];
     $description = $_POST['description'];
     $radius = $_POST['radius'];
+    $maxwidth = $_POST['maxwidth'];
+    $bordersetting=$_POST['bordersetting'];
+    $globalradius = $_POST['globalradius'];
+    $quick_view_enabled = $_POST['quick_view_enabled'];
     $updateAt = date("Y-m-d h:i:sa");
-    $data = $gallery_costum->updateById($id,$images,$margin,$title,$background,$description,$updateAt,$radius);
+    $data = $gallery_costum->updateById($id,$images,$margin,$title,$background,$description,$updateAt,$radius,$maxwidth,$bordersetting,$globalradius,$quick_view_enabled);
    
     
     echo $data;
@@ -921,13 +978,21 @@ function get_gallery($atts)
     $result = $gallery_costum->getGalleryByIdPreview($id);
     $jsonData = stripslashes(html_entity_decode(substr(substr($result, 1), 0, -1)));
     $result =json_decode($jsonData,true);
+    if($result === NULL){
+        $result = $gallery_costum->getGalleryByIdPreview($id);
+        $result =json_decode($result,true)[0];
+    }
     for ($i=0; $i < count($result["images"]); $i++) { 
-        $contentoftheshortcode = $result["images"][$i]['content'];
+        $contentprev = $result["images"][$i]['content'];
         if($result["images"][$i]['content'][0] == '[' && $result["images"][$i]['content'][-1] == ']'){
-            $result["images"][$i]['content'] = do_shortcode( $contentoftheshortcode );
+            $result["images"][$i]['content'] = do_shortcode( $contentprev );
+        }
+        if(strpos($result["images"][$i]['id'] , 'youtube') !== false ){
+            $result["images"][$i]['content'] = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/'.$contentprev.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
         }
     }
-    $gallery_html = '<div class="grid-stack'.$id.'" id="grid-stack'.$id.'" style="max-width: 100% !important;background-color:'.$result['background'].';"></div>
+    
+    $gallery_html = '<div class="grid-stack'.$id.'" id="grid-stack'.$id.'" style="border-radius :'.$result["globalradius"].'px; max-width: '.$result['maxwidth'].'% !important;background-color:'.$result['background'].';" ></div>
     <script>
     let grid'.$id.' = GridStack.init(
         {
@@ -936,21 +1001,30 @@ function get_gallery($atts)
         ".grid-stack'.$id.'"
       )
       var serializedData'.$id.' = '.json_encode($result["images"]).'
+      if(document.getElementById("grid-stack'.$id.'").offsetWidth < 769){
+        for (let index32 = 0; index32 < serializedData'.$id.'.length; index32++) {
+            serializedData'.$id.'[index32]["h"]=1
+        }
+            }
       loadGrid'.$id.' = function () {
         grid'.$id.'.removeAll()
         grid'.$id.'.load(serializedData'.$id.', true) 
       }
-      
       loadGrid'.$id.'()
       grid'.$id.'.setStatic(true)
       var items'.$id.' = document.getElementById("grid-stack'.$id.'").getElementsByClassName("grid-stack-item-content");
       for (var i = 0; i < items'.$id.'.length; i++) {
         items'.$id.'[i].style.cssText += '."'inset:'+".$result["margin"]."+'px';".';
-        items'.$id.'[i].style.cssText += '."'border-radius:'+".$result["radius"]."+'px;'".';
-    }
+        items'.$id.'[i].style.cssText += '."'border-radius:'+".$result["radius"]."+'px;'".';';
+        if($result["bordersetting"]){
+            $gallery_html .=  'if('.$result["bordersetting"]['enabled'].'){
+                items'.$id.'[i].style.cssText += "border:" + '.$result["bordersetting"]['width'].' + "px " + "'.$result["bordersetting"]['style'].'" + " " + "'.$result["bordersetting"]['color'].'" + ";"
+                }';
+        }
+    $gallery_html .='}
       </script>
-
-    <script>const a'.$id.' = new ImgPreviewer("#grid-stack'.$id.'")  </script>';
+    
+    <script>if('.$result["quick_view_enabled"].'){ const a'.$id.' = new ImgPreviewer("#grid-stack'.$id.'"); }  </script>';
     }catch (Exception $e) {
         
     return 'ERROR !';

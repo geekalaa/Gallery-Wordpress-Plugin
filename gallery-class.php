@@ -53,16 +53,20 @@ public function getGalleryByIdPreview($id){
     if($result) {return json_encode($result);}else{return false;}
 }
 
-public function updateById($id,$images,$margin,$title,$background,$description,$updateAt,$radius){
+public function updateById($id,$images,$margin,$title,$background,$description,$updateAt,$radius,$maxwidth,$bordersetting,$globalradius,$quick_view_enabled){
     $update = array(
             array("_id"=>$id),
             array("set"=>array(
                 "images"=>$images,
                 "margin"=>$margin,
                 "radius"=>$radius,
+                "maxwidth"=>$maxwidth,
                 "title"=>$title,
                 "background"=>$background,
                 "description"=>$description,
+                "bordersetting"=>$bordersetting,
+                "globalradius"=>$globalradius,
+                "quick_view_enabled"=>$quick_view_enabled,
                 "updatedAt"=>$updateAt
             ))
         );

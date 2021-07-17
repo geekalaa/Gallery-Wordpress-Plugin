@@ -12,15 +12,58 @@ function display_header_options_content(){
             $return .= '
             <script src="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack-h5.js"></script>
             <link href="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet" />
-            <!-- Return Button -->
-            <div id="ReturnButton" style="padding: 9px;background-color: rgb(221 221 221 / 58%);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 21px;width: fit-content;margin: 3px;display: none;cursor: pointer;">
+            <!-- First Toolbar -->
+            <div id="gallerytoolbar0" style="display:none;padding: 11px; background-color: rgba(197, 197, 197, 0.58); border-top: 1px solid rgb(176, 176, 176); border-right: 1px solid rgb(176, 176, 176); border-left: 1px solid rgb(176, 176, 176); border-image: initial; border-radius: 13px 13px 0px 0px; height: 35px; border-bottom: none;">
+            <div id="ReturnButton" style="padding: 6px;background-color: rgba(221, 221, 221, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 21px;margin: 0px;display: flex;cursor: pointer;float: left;">
                 <img src="https://shareit.topvoce.com/wp-content/plugins/gallery-editor-placeholder-2/assets/left-arrow-return-svgrepo-com.svg" style="width: 16px;"><p style="font-size: 18px;margin-top: -3px;margin-left: 7px;">RETURN</p>
             </div>
-            <!-- First Toolbar -->
-            <div id="gallerytoolbar" style="display:none;padding: 11px;background-color: #c5c5c594;border: 1px solid #b0b0b0;border-radius: 13px;height: 35px;">
+            <a id="addWidget" class="btn btn-primary" href="#">Add Widget</a>
+            <a id="ResetWidget" onclick="clearGridcostum()" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Clear !</a>
+            <a id="exportlayout" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Export Layout</a>
+            <a id="importlayout" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">import layout</a>
+            <input type="file" id="theFile" style=" display: none; " accept=".layout">
+            </div>
+            <div id="gallerytoolbar2" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 35px;margin-top: 0px;float: right;position: absolute;z-index: 999999999999;right: 31px;">
+                    <a id="ImageAdd"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Image</a>
+                    <a id="VideoAdd"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Video</a>
+                    <a id="shortCodeAdd" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Shortcode</a>
+                    <a id="youtubeAdd" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Video From Youtube</a>
+                    </div>
+            <div id="gallerytoolbar" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border-top: 1px solid rgb(176, 176, 176);border-right: 1px solid rgb(176, 176, 176);border-left: 1px solid rgb(176, 176, 176);border-image: initial;border-radius: 0px;height: 35px;border-bottom: none;">
             <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;"><p style="width: fit-content;float: left;">Margin :</p>
             <input id="myRange" type="range" min="0" max="100" step=".5" value="10" class="slider">
             <input id="margin-between" min="0" max="100" step=".5" type="number" value="10" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
+            </div>
+            
+            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;"><p style="width: fit-content;float: left;">Radius :</p>
+            <input id="myRangeRadius" type="range" min="0" max="300" step=".5" value="0" class="slider">
+            <input id="radius-input" min="0" max="300" step=".5" type="number" value="0" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
+            </div>
+            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;"><p style="width: fit-content;float: left;">Border :</p>
+    <input id="myRangeBorder" disabled="disabled" type="range" min="0" max="50" step=".1" class="slider">
+    <input id="border-input" disabled="disabled" min="0" max="50" step=".1" type="number" style="padding: 0px;width: 44px;min-height: auto;height: 30px;margin-left: 6px;">
+<button id="colorpickerborder" disabled="disabled" style="height: 30px;border: 1px solid #9c9c9c;width: 36px;border-radius: 6px;margin-left: 6px;" name="color" onclick="return false;"></button>
+<select id="Selectbordertype" disabled="disabled" style="margin-left: 6px;">
+<option value="solid">Solid</option>
+<option value="dashed">Dashed</option>
+<option value="dotted">Dotted</option>
+<option value="double">Double</option>
+<option value="groove">Groove</option>
+<option value="inset">Inset</option>
+<option value="outset">Outset</option>
+<option value="ridge">Ridge</option>
+</select>
+    <fieldset style="margin-left: 8px;">
+    <input id="checkborder" type="checkbox" checked="checked" name="checkbox" class="checkboxborder" value="1"> <label>No Border</label>
+    </fieldset>
+    </div>
+
+            
+            </div>
+            <div id="gallerytoolbar3" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 0px 0px 13px 13px;height: 35px;">
+            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;"><p style="width: fit-content;float: left;">Max-Width (%) :</p>
+            <input id="myRangemaxwidth" type="range" min="0" max="100" step=".5" value="10" class="slider">
+            <input id="maxwidthinput" min="0" max="100" step=".5" type="number" value="10" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
             </div>
             <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;">
             <button id="colorpicker" disabled="disabled" style="height: 30px;border: 1px solid #9c9c9c;width: 36px;border-radius: 6px;" name="color" style="background-color: rgb(255, 215, 0);padding: 8px 15px;" onclick="return false;"></button>
@@ -28,24 +71,20 @@ function display_header_options_content(){
             <input id="check01" type="checkbox" checked="checked" name="checkbox" class="checkbox" value="1"> <label>No Background</label>
             </fieldset>
             </div>
-            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;"><p style="width: fit-content;float: left;">Radius :</p>
-            <input id="myRangeRadius" type="range" min="0" max="300" step=".5" value="0" class="slider">
-            <input id="radius-input" min="0" max="300" step=".5" type="number" value="0" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
+            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;"><p style="width: fit-content;float: left;">Global Radius :</p>
+            <input id="myRangeglobalradius" type="range" min="0" max="100" step=".5" value="10" class="slider">
+            <input id="globalradiusinput" min="0" max="100" step=".5" type="number" value="8" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
             </div>
-            <a id="addWidget" class="btn btn-primary" href="#" >Add Widget</a>
-            <a id="ResetWidget" onclick="clearGrid()" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Clear !</a>
-            <a id="exportlayout"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Export Layout</a>
-            <a id="importlayout" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">import layout</a>
-            <input type="file" id="theFile" style=" display: none; "/>
+            <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;margin-left: 5px;">
+            
+            <fieldset style="">
+            <input id="QuickViewcheckbox" type="checkbox" checked="checked" name="checkbox" class="QuickViewcheckbox" value="1"> <label>Quick View</label>
+            </fieldset>
             </div>
-
+            </div>
             <!-- Second Toolbar -->
 
-            <div id="gallerytoolbar2" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 35px;margin-top: 18px;float: right;position: absolute;z-index: 999999999999;right: 31px;">
-                    <a id="ImageAdd"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Image</a>
-                    <a id="VideoAdd"  class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Video</a>
-                    <a id="shortCodeAdd" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Add Shortcode</a>
-                    </div>
+            
         <div id="GalleriesFrame" class="grid-container">';
   if(count(array_filter($gallery_costum-> get_all(), function($value) { return !is_null($value) && $value !== ''; })) == 0){ 
 
@@ -137,6 +176,73 @@ function display_header_options_content(){
     $my_saved_attachment_post_id = get_option( 'media_selector_attachment_id', 0 );
   
     ?><script type='text/javascript'>
+var maxwidth = 100;
+var bordersetting = {width:1,color:'black',style:'solid',enabled:false}
+var globalradius = 8;
+var quick_view_enabled = true;
+
+var sliderwidth = document.getElementById('myRangemaxwidth')
+var nnumberofthewidth = document.getElementById('maxwidthinput')
+
+sliderwidth.value = maxwidth
+nnumberofthewidth.value = maxwidth
+
+nnumberofthewidth.addEventListener('input', () => {
+    sliderwidth.value = nnumberofthewidth.value
+    maxwidth = nnumberofthewidth.value;
+})
+
+sliderwidth.oninput = function () {
+  nnumberofthewidth.value = this.value
+  maxwidth = this.value;
+}
+
+
+
+
+var globalradius_range = document.getElementById('myRangeglobalradius')
+var globalradius_input = document.getElementById('globalradiusinput')
+
+globalradius_input.addEventListener('input', () => {
+    globalradius_range.value = globalradius_input.value
+    globalradius = globalradius_input.value;
+    document.getElementById('grid-stack0').style.cssText += 'border-radius:'+globalradius + 'px;'
+})
+
+globalradius_range.oninput = function () {
+    globalradius_input.value = this.value
+  globalradius = this.value;
+  document.getElementById('grid-stack0').style.cssText += 'border-radius: '+globalradius + 'px;'
+}
+
+
+
+
+var sliderborder = document.getElementById('myRangeBorder')
+var nnumberoftheborder = document.getElementById('border-input')
+
+nnumberoftheborder.addEventListener('input', () => {
+    sliderborder.value = nnumberoftheborder.value
+    border = nnumberoftheborder.value;
+    bordersetting.width = nnumberoftheborder.value
+    var items = document.getElementsByClassName('grid-stack-item-content');
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+                }
+                console.log(typeof bordersetting.width)
+})
+
+sliderborder.oninput = function()  {
+  nnumberoftheborder.value = this.value
+  border = this.value;
+  bordersetting.width = this.value
+  var items = document.getElementsByClassName('grid-stack-item-content');
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+              
+                }
+}
+
 
 
 function copyShortcode(text,thi) {
@@ -248,11 +354,11 @@ String.prototype.splice = function(idx, rem, str) {
 
 
 var shortcodearray = []
-
+var youtubecodearray = []
 
 let removeshortcode = (parent,id) => {
     grid.removeWidget(parent)
-    console.log(id)
+
     for( var i = 0; i < shortcodearray.length; i++){ 
                                    
                  if ( shortcodearray[i].id == id) { 
@@ -260,20 +366,49 @@ let removeshortcode = (parent,id) => {
                          i--; 
                          }
              }
-             console.log(shortcodearray)
+    
 }
+
+let removeYoutubecode = (parent,id) => {
+    grid.removeWidget(parent)
+
+    for( var i = 0; i < youtubecodearray.length; i++){ 
+                                   
+                 if ( youtubecodearray[i].id == id) { 
+                    youtubecodearray.splice(i, 1); 
+                         i--; 
+                         }
+             }
+    
+}
+
+function clearGridcostum(){
+    clearGrid()
+    shortcodearray = []
+    youtubecodearray = []
+}
+
+
+
+
+
 
 jQuery(document).ready(function($) {
     var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
-    
     var x = document.getElementById("gallerytoolbar2");
     var backgroundcheckbox = false;
+    var bordercheckbox = false;
     var backgroundColor = '';
+    var margin = 0
+    var radius = 0
 
-    // $(document).on("input", ".inputshort", function(e) {
-    //     var idOfShortCode = $(this).attr('id');
-
-    // })
+    jQuery(".QuickViewcheckbox").change(function() {
+        if (this.checked) {
+            quick_view_enabled = true;
+        } else {
+            quick_view_enabled = false;
+        }
+    });
 
 
     jQuery('#addWidget').on('click', () => {
@@ -297,6 +432,11 @@ jQuery(document).ready(function($) {
 
     jQuery('#shortCodeAdd').on('click', () => {
         addShortcodegal();
+        x.style.display = 'none';
+    });
+
+    jQuery('#youtubeAdd').on('click', () => {
+        addYoutubecodegal();
         x.style.display = 'none';
     });
 
@@ -340,7 +480,7 @@ jQuery(document).ready(function($) {
                     shortcode: shortcodefinalvalueformatted
                 },
                 success: function(response) {
-                    console.log(shortcodearray);
+                   
                     if (shortcodearray.length) {
                         for (let index = 0; index < shortcodearray.length; index++) {
                             if (shortcodearray[index]['id'] == id_shortcode_div) {
@@ -380,6 +520,76 @@ jQuery(document).ready(function($) {
         }
     });
 
+
+
+
+    jQuery(document).on("click", ".preview-youtube-gal", function(e) {
+        e.preventDefault();
+        var id_youtube_div = jQuery(this).attr('id');
+        var inputtextyoutube = jQuery('input[id="' + id_youtube_div + '"]');
+        var Previewtextyoutubecode = jQuery('a[id="' + id_youtube_div + '"]');
+        var Youtubecodefinalvalueformatted = jQuery.trim(inputtextyoutube.val());
+
+        if (youtubecodearray.length) {
+                        for (let index = 0; index < youtubecodearray.length; index++) {
+                            if (youtubecodearray[index]['id'] == id_youtube_div) {
+                                youtubecodearray[index]['youtube_id'] = Youtubecodefinalvalueformatted;
+                            } else {
+                                youtubecodearray.push({
+                                    'id': id_youtube_div,
+                                    'youtube_id': Youtubecodefinalvalueformatted
+                                });  
+                            }
+                        }
+                    } else {
+                        youtubecodearray.push({
+                            'id': id_youtube_div,
+                            'youtube_id': Youtubecodefinalvalueformatted
+                        });
+                    }
+                    youtubecodearray = youtubecodearray.reduce((acc, current) => {const x = acc.find(item => item.id === current.id);if (!x) {return acc.concat([current]);} else {return acc;}}, []); 
+                    var globaldivoftheyoutubecode = jQuery('div[youtubecodeid="' + id_youtube_div +
+                        '"]')
+                        globaldivoftheyoutubecode.css('width', '100%');
+                        globaldivoftheyoutubecode.css('height', '100%');
+                        globaldivoftheyoutubecode.append(
+                        '<div style="width:100%;height:100%;" content="' +
+                        id_youtube_div +
+                        '"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/'+Youtubecodefinalvalueformatted+'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><a id="' +
+                        id_youtube_div + '" style=" position: absolute; top: 43%; left: 0px; " class="edit-youtubecode-gal">Edit</a></div>'
+                    );
+                    inputtextyoutube.css('display', 'none');
+                    Previewtextyoutubecode.css('display', 'none');
+    });
+
+
+
+    jQuery(document).on("click", ".edit-youtubecode-gal", function(e) {
+        e.preventDefault();
+        var id_youtubecode_div = jQuery(this).attr('id');
+        var globaldivoftheyoutubecode = jQuery('div[youtubecodeid="' + id_youtubecode_div +
+            '"]')
+
+            var inputtextyoutube = jQuery('input[id="' + id_youtubecode_div + '"]');
+        var Previewtextyoutubecode = jQuery('a[id="' + id_youtubecode_div + '"]');
+        jQuery('div[content="' + id_youtubecode_div + '"]').css('display', 'none');
+        inputtextyoutube.css('display', '');
+        for (let index = 0; index < youtubecodearray.length; index++) {
+            if(youtubecodearray[index]['id'] == id_youtubecode_div){
+                inputtextyoutube.val(youtubecodearray[index]['youtube_id'])
+            }
+        }
+        
+        globaldivoftheyoutubecode.css('display', '');
+        Previewtextyoutubecode.css('display', '');
+
+
+    });
+
+
+
+
+
     jQuery(document).on("click", ".edit-shortcode-gal", function(e) {
         e.preventDefault();
 
@@ -406,7 +616,6 @@ jQuery(document).ready(function($) {
 
 
 
-
     jQuery("#GalleriesFrame").LoadingOverlay("show", {
         background: "#797979d9",
     });
@@ -427,6 +636,8 @@ jQuery(document).ready(function($) {
         clearGrid();
         todo = 'add';
         jQuery('#gallerytoolbar').css("display", "");
+        jQuery('#gallerytoolbar0').css("display", "");
+        jQuery('#gallerytoolbar3').css("display", "");
         jQuery('form').css("display", "");
         jQuery('#titleLabel').attr("style",
             "display :inline-block !important;");
@@ -461,17 +672,23 @@ jQuery(document).ready(function($) {
         jQuery('#createdAt').text(time);
         jQuery('#updatedAt').text(time);
         jQuery('#timebar').css('display', '');
+        bordersetting = {width:1,color:'black',style:'solid',enabled:false}
         document.getElementById("colorpicker").disabled = true;
                     document.getElementById("colorpicker").style.backgroundColor = '';
                     document.getElementById("check01").checked = true;
                     jQuery('div#grid-stack0').css('background-color', '');
                     backgroundColor = ''
+                    document.getElementById("myRangemaxwidth").value = 100
+                document.getElementById("maxwidthinput").value = 100
+                
     });
 
     jQuery("#Cancel").on('click', function(e) {
         e.preventDefault();
         jQuery('#app0').attr("style", "display: none !important");
         jQuery('#gallerytoolbar').css("display", "none");
+        jQuery('#gallerytoolbar0').css("display", "none");
+        jQuery('#gallerytoolbar3').css("display", "none");
         jQuery('#grid-stack0').css('display', 'none');
         // jQuery('form').css("display", "none");
         jQuery('#titleLabel').attr("style",
@@ -496,6 +713,7 @@ jQuery(document).ready(function($) {
         jQuery('#bartoolsearchandfilter').css('display','flex');
         jQuery('#gallerytoolbar2').css('display','none');
         shortcodearray = [];
+        youtubecodearray = []
     });
 
     jQuery(document).on("click", ".item-gallery-grid-edit", function(e) {
@@ -507,6 +725,8 @@ jQuery(document).ready(function($) {
         e.preventDefault();
         jQuery('.css-1qhk0jk').css("display", "");
         jQuery('#gallerytoolbar').css("display", "");
+        jQuery('#gallerytoolbar0').css("display", "");
+        jQuery('#gallerytoolbar3').css("display", "");
         jQuery('form').css("display", "");
         jQuery('#titleLabel').attr("style",
             "display :inline-block !important;");
@@ -536,6 +756,7 @@ jQuery(document).ready(function($) {
                 id: id
             },
             success: function(response) {
+                bordersetting = {width:1,color:'black',style:'solid',enabled:false}
                 jsonresp = JSON.parse(response);
                 gallery = jsonresp[0];
                 jQuery('#title').val(gallery.title);
@@ -548,6 +769,7 @@ jQuery(document).ready(function($) {
                             `<button onClick="grid.removeWidget(this.parentNode.parentNode)" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button> ${layout[index].content ? layout[index].content : ''}`;
                         var n = layout[index].content.indexOf("<img");
                         var nvid = layout[index].content.indexOf("<video");
+                        var idyoutube = layout[index].id.indexOf("youtube");
 
                         if (n != -1) {
                             layout[index].content = layout[index].content.splice(n + 4, 0,
@@ -558,7 +780,11 @@ jQuery(document).ready(function($) {
                                 0,
                                 ` onclick="changeVideoGallery(this.parentNode.parentNode.getAttribute('gs-id'))"`
                             );
+                        }else if(idyoutube != -1){
+                            layout[index].content = `<button onclick="removeYoutubecode(this.parentNode.parentNode,'${layout[index].id}')" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div youtubecodeid="${layout[index].id}" class="Youtubecodeinput"><input value="${previouscontent}" type="text" id="${layout[index].id}" placeholder="Paste here the video ID" class="inputyoutube"><a id="${layout[index].id}" class="preview-youtube-gal">SAVE</a></div>`
                         }else{
+                           
+                            previouscontent = previouscontent.replaceAll('"', "'")
                             layout[index].content = `<button onClick="removeshortcode(this.parentNode.parentNode,'${layout[index].id}')" style=" position: absolute; opacity: 0.5; z-index: 999; ">X</button><div shortcodeid="${layout[index].id}" class="shortcodeinput">
     <input type="text" id="${layout[index].id}" value ="${previouscontent}" placeholder="Paste here your shortcode" class="inputshort">
     <a id="${layout[index].id}" class="preview-shortcode-gal">SAVE</a>
@@ -571,29 +797,72 @@ jQuery(document).ready(function($) {
                       
                         }
                     }
-                    console.log(shortcodearray,shortcodearray.length);
+                   
                     serializedData = layout;
                     loadGrid();
 
                 }
-
+                globalradius = gallery.globalradius
+                                quick_view_enabled = gallery.quick_view_enabled
+                if(quick_view_enabled == 'true'){
+                    document.getElementById("QuickViewcheckbox").checked = true
+                }else if(quick_view_enabled == 'false'){
+                    document.getElementById("QuickViewcheckbox").checked = false
+                }
+                
+                document.getElementById('grid-stack0').style.cssText += 'border-radius:'+ globalradius + 'px;'
+                globalradius_range.value = globalradius
+                 globalradius_input.value = globalradius
                 jQuery('#margin-between').val(gallery.margin);
                 jQuery('#radius-input').val(gallery.radius);
                 document.getElementById("myRange").value = gallery.margin;
                 document.getElementById("myRangeRadius").value = gallery.radius;
+                maxwidth = gallery.maxwidth
+                sliderwidth.value = maxwidth
+                nnumberofthewidth.value = maxwidth
+                bordersetting = gallery.bordersetting
                 var items = document.getElementsByClassName('grid-stack-item-content');
                 for (var i = 0; i < items.length; i++) {
                     items[i].style.cssText += 'inset:' + gallery.margin + 'px;';
                     items[i].style.cssText += 'border-radius:' + gallery.radius + 'px;';
+                    if(bordersetting.enabled == 'true'){
+                        items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+                     }
                     if (gallery.radius >= 15) {
                         items[i].getElementsByTagName('button')[0].classList.add(
                             'removeWidgetcustomgallery')
                     }
                 }
+                var margin = gallery.margin
+                var radius = gallery.radius
+                
+                if(bordersetting.enabled == 'true'){
+                    document.getElementById("myRangeBorder").value = bordersetting.width;
+            document.getElementById("border-input").value = bordersetting.width;
+            document.getElementById("colorpickerborder").disabled = false;
+            document.getElementById("colorpickerborder").style.backgroundColor = bordersetting.color;
+            document.getElementById("myRangeBorder").disabled = false;
+            document.getElementById("border-input").disabled = false;
+            document.getElementById("Selectbordertype").disabled = false;
+            document.getElementById("Selectbordertype").value = bordersetting.style;
+            document.getElementById("checkborder").checked = false;
+                }else{
+                    document.getElementById("Selectbordertype").value = bordersetting.style;
+                    document.getElementById("colorpickerborder").style.backgroundColor = bordersetting.color;
+                    document.getElementById("myRangeBorder").value = bordersetting.width;
+            document.getElementById("border-input").value = bordersetting.width;
+            document.getElementById("colorpickerborder").disabled = true;
+            document.getElementById("myRangeBorder").disabled = true;
+            document.getElementById("border-input").disabled = true;
+            document.getElementById("Selectbordertype").disabled = true;
+            document.getElementById("checkborder").checked = true;
+                }
+
                 if (gallery.background) {
                     document.getElementById("colorpicker").disabled = false;
                     document.getElementById("colorpicker").style.backgroundColor = gallery.background;
                     document.getElementById("check01").checked = false;
+                    backgroundColor = gallery.background
                     jQuery('div#grid-stack0').css('background-color', gallery.background);
                 }else{
                     document.getElementById("colorpicker").disabled = true;
@@ -637,7 +906,8 @@ jQuery(document).ready(function($) {
 
     setInterval(function () {
         var nbrshortcodefinal = jQuery('input[id^=shortcode]').length
-        if(nbrshortcodefinal != shortcodearray.length){
+        var nbryoutubecodefinal = jQuery('input[id^=youtube]').length
+        if(nbrshortcodefinal != shortcodearray.length || nbryoutubecodefinal != youtubecodearray.length){
             jQuery('input[type=submit]').attr('disabled',true)
         }else{
             jQuery('input[type=submit]').attr('disabled',false)
@@ -673,18 +943,29 @@ jQuery(document).ready(function($) {
 
 
     jQuery('[id^=image_changer]').on('submit', function(e) {
-        
         e.preventDefault();
         var array_images_final = saveGrid();
+        var mobileVersion = array_images_final
         if (shortcodearray.length) {
             for (let index = 0; index < shortcodearray.length; index++) {
                 for (let index2 = 0; index2 < array_images_final.length; index2++) {
                         if(shortcodearray[index]['id'] == array_images_final[index2]['id']){
-                            array_images_final[index2]['content'] = shortcodearray[index]['shortcode']
+                            array_images_final[index2]['content'] = shortcodearray[index]['shortcode'].replaceAll("'", '"')
                     }  
                 }
             }
         }
+
+        if (youtubecodearray.length) {
+            for (let index = 0; index < youtubecodearray.length; index++) {
+                for (let index2 = 0; index2 < array_images_final.length; index2++) {
+                        if(youtubecodearray[index]['id'] == array_images_final[index2]['id']){
+                            array_images_final[index2]['content'] = youtubecodearray[index]['youtube_id']
+                    }  
+                }
+            }
+        }
+        
         
         jQuery("#grid-stack0").LoadingOverlay("show", {
             background: "#797979d9"
@@ -705,7 +986,11 @@ jQuery(document).ready(function($) {
                 radius: radius,
                 title: title,
                 description: description,
-                background: backgroundColor
+                background: backgroundColor,
+                maxwidth:maxwidth,
+                globalradius:globalradius,
+                quick_view_enabled:quick_view_enabled,
+                bordersetting,bordersetting
             },
             success: function(response) {
 
@@ -748,13 +1033,27 @@ jQuery(document).ready(function($) {
         backgroundColor = color.rgbaString;
             },
         });
+
+        var parentborder = document.querySelector('#colorpickerborder');
+        var picker = new Picker({
+            parent: parentborder,
+            color:'black',
+            onChange: function (color) {
+                parentborder.style.backgroundColor = color.rgbaString;
+                bordersetting.color = color.rgbaString;
+                var items = document.getElementsByClassName('grid-stack-item-content');
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+               
+                }
+            },
+        });
     // jQuery('#colorpicker').on('input', function() {
     //     jQuery('div#grid-stack0').css('background-color', this.value);
     //     backgroundColor = this.value;
     // });
 
-
-    jQuery(".checkbox").change(function() {
+    jQuery(document).on("change", ".checkbox", function(e) {
         if (this.checked) {
             backgroundcheckbox = false;
             document.getElementById("colorpicker").disabled = true;
@@ -763,6 +1062,38 @@ jQuery(document).ready(function($) {
         } else {
             backgroundcheckbox = true;
             document.getElementById("colorpicker").disabled = false;
+        }
+    });
+    jQuery(document).on("change", ".checkboxborder", function(e) {
+        var items = document.getElementsByClassName('grid-stack-item-content');
+        if (this.checked) {
+            bordercheckbox = false;
+            // document.getElementById("myRangeBorder").value = 1;
+            // document.getElementById("border-input").value = 1;
+            document.getElementById("colorpickerborder").disabled = true;
+            document.getElementById("myRangeBorder").disabled = true;
+            document.getElementById("border-input").disabled = true;
+            document.getElementById("Selectbordertype").disabled = true;
+            bordersetting.enabled = false;
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.border = 'none';
+                }
+        } else {
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+                }
+            bordersetting.enabled = true;
+            bordercheckbox = true;
+            // document.getElementById("myRangeBorder").value = 1;
+            // document.getElementById("border-input").value = 1;
+            document.getElementById("colorpickerborder").disabled = false;
+            document.getElementById("myRangeBorder").disabled = false;
+            document.getElementById("border-input").disabled = false;
+            document.getElementById("Selectbordertype").disabled = false;
+            document.getElementById("colorpickerborder").style.backgroundColor =  bordersetting.color
+            document.getElementById("myRangeBorder").value = bordersetting.width
+            document.getElementById("border-input").value = bordersetting.width
+            document.getElementById("Selectbordertype").value = bordersetting.style
         }
     });
 
@@ -840,6 +1171,18 @@ jQuery(document).ready(function($) {
 
 
     });
+
+
+
+    jQuery('#Selectbordertype').on('change', () => {
+        bordersetting.style = document.getElementById("Selectbordertype").value
+        var items = document.getElementsByClassName('grid-stack-item-content');
+            for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + bordersetting.width + 'px ' + bordersetting.style  + ' ' + bordersetting.color;
+               
+                }
+    })
+
 
 
     jQuery('#Filterselect').on('change', () => {
@@ -933,7 +1276,11 @@ jQuery(document).ready(function($) {
 
     jQuery(document).on("click", "#exportlayout", function(e) {
         e.preventDefault();
-    download( Date.now()+'.layout', JSON.stringify(grid.save()));
+        var margin = jQuery('#margin-between').val();
+        var radius = jQuery('#radius-input').val();
+        var dataexported = grid.save()
+        var downloadingdata = {data:JSON.stringify(dataexported),margin:margin,radius:radius,backgroundColor:backgroundColor,maxwidth:maxwidth,border:bordersetting,globalradius:globalradius,quick_view_enabled:quick_view_enabled}
+    download( Date.now()+'.layout', JSON.stringify(downloadingdata));
     })
 
     function performClick(elemId) {
@@ -947,13 +1294,98 @@ jQuery(document).ready(function($) {
    var file = e.target.files[0]; 
    var reader = new FileReader();
    reader.readAsText(file,'UTF-8');
-
-   // here we tell the reader what to do when it's done reading...
    reader.onload = readerEvent => {
+    
       var content = JSON.parse(readerEvent.target.result)
       grid.removeAll();
-      grid.load(content)
-      console.log( content )
+      var contentobj = JSON.parse(content.data)
+      var marginfromfile = content.margin
+      var radiusfromfile = content.radius
+      var backgroundfromfile = content.backgroundColor
+      var maxwidthfromfile = content.maxwidth
+      var borderfromfile = content.border
+      globalradius = content.globalradius
+      maxwidth = maxwidthfromfile 
+      quick_view_enabled = content.quick_view_enabled
+      document.getElementById("QuickViewcheckbox").checked = quick_view_enabled
+      document.getElementById('grid-stack0').style.cssText += 'border-radius:'+globalradius + 'px;'
+      globalradius_range.value = globalradius
+      globalradius_input.value = globalradius
+      grid.load(contentobj)
+
+      jQuery('#margin-between').val(marginfromfile);
+                jQuery('#radius-input').val(radiusfromfile);
+                document.getElementById("myRange").value = marginfromfile;
+                document.getElementById("myRangeRadius").value = radiusfromfile;
+                var items = document.getElementsByClassName('grid-stack-item-content');
+                for (var i = 0; i < items.length; i++) {
+                    items[i].style.cssText += 'inset:' + marginfromfile + 'px;';
+                    items[i].style.cssText += 'border-radius:' + radiusfromfile + 'px;';
+                    if (radiusfromfile >= 15) {
+                        items[i].getElementsByTagName('button')[0].classList.add(
+                            'removeWidgetcustomgallery')
+                    }
+                }
+                if (backgroundfromfile) {
+                    document.getElementById("colorpicker").disabled = false;
+                    document.getElementById("colorpicker").style.backgroundColor = backgroundfromfile;
+                    document.getElementById("check01").checked = false;
+                    backgroundColor = backgroundfromfile
+                    jQuery('div#grid-stack0').css('background-color', backgroundfromfile);
+                }else{
+                    document.getElementById("colorpicker").disabled = true;
+                    document.getElementById("colorpicker").style.backgroundColor = '';
+                    document.getElementById("check01").checked = true;
+                    jQuery('div#grid-stack0').css('background-color', '');
+                    backgroundColor = ''
+                }
+                document.getElementById("myRangemaxwidth").value = maxwidthfromfile
+                document.getElementById("maxwidthinput").value = maxwidthfromfile
+                bordersetting = borderfromfile
+                if(borderfromfile.enabled){
+                    var items = document.getElementsByClassName('grid-stack-item-content');
+                     for (var i = 0; i < items.length; i++) {
+                  items[i].style.cssText += 'border:' + borderfromfile.width + 'px ' + borderfromfile.style  + ' ' + borderfromfile.color;
+                     }
+            document.getElementById("myRangeBorder").value = borderfromfile.width;
+            document.getElementById("border-input").value = borderfromfile.width;
+            document.getElementById("colorpickerborder").disabled = false;
+            document.getElementById("colorpickerborder").style.backgroundColor = borderfromfile.color;
+            document.getElementById("myRangeBorder").disabled = false;
+            document.getElementById("border-input").disabled = false;
+            document.getElementById("Selectbordertype").disabled = false;
+            document.getElementById("Selectbordertype").value = borderfromfile.style;
+            document.getElementById("checkborder").checked = false;
+                }else{
+                    document.getElementById("Selectbordertype").value = bordersetting.style;
+                    document.getElementById("colorpickerborder").style.backgroundColor = bordersetting.color;
+                    document.getElementById("myRangeBorder").value = bordersetting.width;
+            document.getElementById("border-input").value = bordersetting.width;
+            document.getElementById("colorpickerborder").disabled = true;
+            document.getElementById("myRangeBorder").disabled = true;
+            document.getElementById("border-input").disabled = true;
+            document.getElementById("Selectbordertype").disabled = true;
+            document.getElementById("checkborder").checked = true;
+            bordersetting.enabled = false;
+                }
+
+
+
+
+                shortcodearray = []
+                youtubecodearray = []
+                // for (let index = 0; index < contentobj.length; index++) {
+                //     var parser = new DOMParser();
+	            //     var doc = parser.parseFromString(contentobj[index].content, 'text/html');
+                //     if(doc.body.querySelector('div')){
+                //         var contentshortcodefromfile = doc.body.querySelector('div').querySelector('input').getAttribute('value')
+                //         shortcodearray.push({
+                //             'id': contentobj[index].id,
+                //             'shortcode': contentshortcodefromfile
+                //         });
+                //     }   
+                // }
+                
       elem.value = '';
    }
 }
