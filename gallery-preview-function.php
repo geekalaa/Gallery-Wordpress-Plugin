@@ -1,17 +1,28 @@
 <?php
+
+global $idtoshow;
+if ( ! empty( $_GET['i'] )){
+    $idtoshow = $_GET['i'];
+}
 function display_header_options_content(){
     }
 
 
     function Get_Gallery_Preview($id_gallery){
+        global $idtoshow;
         global $gallery_costum;
         global $gallery_costum; 
         global $imagesArr;
         $Galleries = $gallery_costum->get_all();
+        if(isset($idtoshow) == 1){
+            $GalleryFromid = $gallery_costum->getGalleryByIdPreview($idtoshow);
+        }
         $return ="";
             $return .= '
             <script src="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack-h5.js"></script>
             <link href="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet" />
+            <h3 style="display:none;" id="addGalleryh">Add a Gallery</h3>
+            <h3 style="display:none;" id="modifyGalleryh">Modify a Gallery</h3>
             <!-- First Toolbar -->
             <div id="gallerytoolbar0" style="display:none;padding: 11px; background-color: rgba(197, 197, 197, 0.58); border-top: 1px solid rgb(176, 176, 176); border-right: 1px solid rgb(176, 176, 176); border-left: 1px solid rgb(176, 176, 176); border-image: initial; border-radius: 13px 13px 0px 0px; height: 35px; border-bottom: none;">
             <div id="ReturnButton" style="padding: 6px;background-color: rgba(221, 221, 221, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 21px;margin: 0px;display: flex;cursor: pointer;float: left;">
@@ -60,7 +71,7 @@ function display_header_options_content(){
 
             
             </div>
-            <div id="gallerytoolbar3" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 0px 0px 13px 13px;height: 35px;">
+            <div id="gallerytoolbar3" style="display:none;padding: 11px;background-color: rgba(197, 197, 197, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 0px 0px 13px 13px;height: 35px;margin-bottom: 16px;">
             <div style="width: fit-content;float: left;height: 87%;display: flex;flex-direction: row;flex-wrap: nowrap;align-content: space-around;justify-content: space-around;align-items: stretch;padding: 3px 8px;background-color: #cbcbcb;border-radius: 8px;"><p style="width: fit-content;float: left;">Max-Width (%) :</p>
             <input id="myRangemaxwidth" type="range" min="0" max="100" step=".5" value="10" class="slider">
             <input id="maxwidthinput" min="0" max="100" step=".5" type="number" value="10" style="padding: 0px;width: 44px;min-height: auto;height: 30px;">
@@ -91,6 +102,37 @@ function display_header_options_content(){
   $return .= '<a id="creategalle"
   style="padding: 9px 9px;margin: 9px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;text-align: center;grid-column: none;"
         href="#">Create New Gallery</a>';
+   }else if(isset($idtoshow) == 1){
+    // $jsonData = stripslashes(html_entity_decode(substr(substr($GalleryFromid, 1), 0, -1)));
+    $GalleryFromid =json_decode($GalleryFromid,true);
+    $return .= '
+    <a id="creategalle" class="creategalle"
+    style="display:none;"
+          href="#">Create New Gallery</a>';
+       for ($i=0; $i < count($GalleryFromid); $i++) { 
+           if($GalleryFromid[$i]['_id'] != null){
+            if(strlen($GalleryFromid[$i]['title']) > 25){ $title = substr_replace($GalleryFromid[$i]['title'], "...", 25);}else{$title = $GalleryFromid[$i]['title'];}
+        $return .='
+        <div class="grid-item" id="gallery-'.$GalleryFromid[$i]['_id'].'">
+         <p id-prev="'.$GalleryFromid[$i]['_id'].'" style=" display: flex; justify-content: center; ">'.$title;
+         if($GalleryFromid[$i]['updatedAt'] == ''){
+        $return .= '<b style="color: white;background-color: red;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">NEW</b>';
+         }else if($GalleryFromid[$i]['updatedAt'] == 'COPIED'){
+        $return .= '<b style="color: white;background-color: #ffbc00;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">CLONED</b>';
+         }
+         $return .= '</p>
+         <p  style=" cursor: pointer; " class="shortcode-code" onclick="copyShortcode(this.innerHTML,this)">[gallery-editor-V2 id="'.$GalleryFromid[$i]['_id'].'"]</p>
+         <p>Created At : <b>'.$GalleryFromid[$i]['createdAt'].'</b></p>
+         <p>Widgets : <b>'.count($GalleryFromid[$i]['images']).'</b></p>
+         <a gallery-id="'.$GalleryFromid[$i]['_id'].'" class="item-gallery-grid-edit" href="#" >Edit</a>';
+         if($GalleryFromid[$i]['updatedAt'] != 'COPIED'){
+            $return .='<a gallery-id="'.$GalleryFromid[$i]['_id'].'" class="item-gallery-grid-duplicateit" href="#">Duplicate</a>';
+         }
+         $return .='<a gallery-id="'.$GalleryFromid[$i]['_id'].'" class="item-gallery-grid-remove" href="#">Remove</a></div>';
+       }}
+
+
+
    }else{
     $return .= '
     <a id="creategalle" class="creategalle"
@@ -101,7 +143,7 @@ function display_header_options_content(){
             if(strlen($Galleries[$i]['title']) > 25){ $title = substr_replace($Galleries[$i]['title'], "...", 25);}else{$title = $Galleries[$i]['title'];}
         $return .='
         <div class="grid-item" id="gallery-'.$Galleries[$i]['_id'].'">
-         <p style=" display: flex; justify-content: center; ">'.$title;
+         <p id-prev="'.$Galleries[$i]['_id'].'" style=" display: flex; justify-content: center; ">'.$title;
          if($Galleries[$i]['updatedAt'] == ''){
         $return .= '<b style="color: white;background-color: red;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">NEW</b>';
          }else if($Galleries[$i]['updatedAt'] == 'COPIED'){
@@ -120,9 +162,6 @@ function display_header_options_content(){
    }
   if($id_gallery == 0){
       $return .='</div>
-      <h3 style="display:none;" id="addGalleryh">Add a Gallery</h3>
-      <h3 style="display:none;" id="modifyGalleryh">Modify a Gallery</h3>
-      
       <div style="display:none;" class="grid-stack2" id="grid-stack'.$id_gallery.'"></div><div  id="notify"></div>
       <script>
       var pluginrelativeUrl = "'.plugin_dir_url(__FILE__).'";
@@ -130,7 +169,6 @@ function display_header_options_content(){
       </script>
       <script src="'.plugin_dir_url(__FILE__).'/assets/js/grid-layout-script.js"></script>
       <script src="'.plugin_dir_url(__FILE__).'/assets/js/vanilla-picker.js"></script>
-      <!--TO BE MODIFIED FOR FRONT EEEEEEEEEEEEEEENNNNNNNNNNNNNNNNNNNNNNNNNNDDDDDDDDDDDDDDDDDDDDDD ########################################################################## -->
       <script>//const a'.$id_gallery.' = new ImgPreviewer("#grid-stack'.$id_gallery.'") </script>';
   }
         return $return;
@@ -180,7 +218,7 @@ var maxwidth = 100;
 var bordersetting = {width:1,color:'black',style:'solid',enabled:false}
 var globalradius = 8;
 var quick_view_enabled = true;
-
+var history_array_final = {"Title":null,"task":null,"galleryId":null,"structure":null};
 var sliderwidth = document.getElementById('myRangemaxwidth')
 var nnumberofthewidth = document.getElementById('maxwidthinput')
 
@@ -394,7 +432,6 @@ function clearGridcostum(){
 
 
 jQuery(document).ready(function($) {
-    var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
     var x = document.getElementById("gallerytoolbar2");
     var backgroundcheckbox = false;
     var bordercheckbox = false;
@@ -715,13 +752,13 @@ jQuery(document).ready(function($) {
         shortcodearray = [];
         youtubecodearray = []
     });
-
+    var jsonresp;
     jQuery(document).on("click", ".item-gallery-grid-edit", function(e) {
         // jQuery(".item-gallery-grid-edit").on('click', function(e) {
         id = jQuery(this).attr('gallery-id');
         todo = 'update';
         var gallery;
-        var jsonresp;
+        
         e.preventDefault();
         jQuery('.css-1qhk0jk').css("display", "");
         jQuery('#gallerytoolbar').css("display", "");
@@ -974,11 +1011,14 @@ jQuery(document).ready(function($) {
         var margin = jQuery('#margin-between').val();
         var radius = jQuery('#radius-input').val();
         var description = jQuery('#description').val();
+        history_array_final.Title = title;
+        history_array_final.galleryId = id;
+        history_array_final.structure = array_images_final;
         jQuery.ajax({
             type: 'post',
             url: AjaxUrlGalleryCostum, //AjaxUrlGalleryCostum
             data: {
-                action: 'ping1',
+                action: 'manage',
                 todo: todo,
                 id: id,
                 images: array_images_final,
@@ -993,7 +1033,17 @@ jQuery(document).ready(function($) {
                 bordersetting,bordersetting
             },
             success: function(response) {
-
+                jQuery.ajax({
+            type: 'post',
+            url: AjaxUrlGalleryCostum, //AjaxUrlGalleryCostum
+            data: {
+                action: 'addhistory',
+                history_array_final: history_array_final
+            },
+            success: function(response) {
+                console.log(response);
+            },
+        })
                 if (jQuery("#submitsuccess").length == 0) {
 
                     jQuery("p[class=submit]").append(
@@ -1129,7 +1179,8 @@ jQuery(document).ready(function($) {
                         if (gallery[index]) {
                             if (gallery[index]['_id'] != '') {
                                 content += '<div class="grid-item" id="gallery-' + gallery[
-                                    index]['_id'] + '"><p>' + gallery[index]['title'];
+                                    index]['_id'] + '"><p id-prev="'+gallery[
+                                    index]['_id']+'">' + gallery[index]['title'];
                                 var tagNew =
                                     '<b style="color: white;background-color: red;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">NEW</b>'
                                 var tagCopied =
@@ -1218,7 +1269,8 @@ jQuery(document).ready(function($) {
                         if (gallery[index]) {
                             if (gallery[index]['_id'] != '') {
                                 content += '<div class="grid-item" id="gallery-' + gallery[
-                                    index]['_id'] + '"><p>' + gallery[index]['title'];
+                                    index]['_id'] + '"><p id-prev="'+gallery[
+                                    index]['_id']+'">' + gallery[index]['title'];
                                 var tagNew =
                                     '<b style="color: white;background-color: red;padding: 1px 3px;border: 1px solid silver;border-radius: 8px;font-size: 11px;font-weight: 400;margin-left: 3px;">NEW</b>'
                                 var tagCopied =
@@ -1395,6 +1447,51 @@ jQuery(document).ready(function($) {
         performClick('theFile')
     })
 
+            function openNav() {
+                document.getElementById("myNav").style.width = "100%";
+              }
+              
+              
+    jQuery(document).on("click", "p", function(e) {
+        if($(this).attr('id-prev') != undefined){
+            jQuery.ajax({
+            type: 'post',
+            url: AjaxUrlGalleryCostum, //AjaxUrlGalleryCostum
+            data: {
+                action: 'getshortcodeFrom',
+                id: $(this).attr('id-prev')
+            },
+            success: function(response) {
+                openNav();
+                jQuery('#overlay-content').html(response)
+                
+            }
+        });
+        }
+    });
+
+    grid.on('added removed change', function (e, items) {
+  let str = '';
+
+  //items.forEach(function (item) { /*str += ' (x,y)=' + item.x + ',' + item.y;*/ console.log(item) });
+  console.log(e.type + ' ' + items.length + ' items');
+
+
+ 
+    history_array_final.task = e.type + ' ' + items.length + ' items';
+
+        //console.log(jsonresp[0]['images']);
+        
+        // if(array_images_now != jsonresp[0]['images']){
+        //     console.log('changing');
+
+        // }else{
+        //     console.log('same');
+        // }
+
+
+  
+});
 
 });
 </script>

@@ -26,13 +26,17 @@ defined( 'ABSPATH' ) or die( 'You don\t have the permission to access THIS !' );
 
 
 include('gallery-class.php');
-
+include('history-class.php');
 
 
 global $imagesArr;
 global $gallery_costum;
+global $History_gallery_costum;
 if( class_exists( 'gallery_costum' ) ){
     $gallery_costum = new gallery_costum();
+}
+if( class_exists( 'History_gallery_costum' ) ){
+    $History_gallery_costum = new History_gallery_costum();
 }
 
 $imagesArr = $gallery_costum->Getimages_array();
@@ -44,456 +48,51 @@ add_action("admin_menu", "add_new_menu_items");
 function add_new_menu_items(){
     //add a new menu item. This is a top level menu item i.e., this menu item can have sub menus
     add_menu_page(
-    "Galerie Costum Cos", //Required. Text in browser title bar when the page associated with this menu item is displayed.
-    "Gallery editor V2", //Required. Text to be displayed in the menu.
+    "Dashboard", //Required. Text in browser title bar when the page associated with this menu item is displayed.
+    "Gallery Editor", //Required. Text to be displayed in the menu.
     "manage_options", //Required. The required capability of users to access this menu item.
     "galerie-costum-cos", //Required. A unique identifier to identify this menu item.
     "theme_options_page", //Optional. This callback outputs the content of the page associated with this menu item.
-    null, //Optional. The URL to the menu item icon.
+    plugin_dir_url(__FILE__).'assets/gallery-131964752828011266.png', //Optional. The URL to the menu item icon.
     99 //Optional. Position of the menu item in the menu.
     );
-    
+    add_submenu_page('galerie-costum-cos', 'Analytics', 'Analytics', 'manage_options', 'analytics','analytics' );
+    add_submenu_page('galerie-costum-cos', 'History', 'History', 'manage_options', 'history','history' );
+    add_submenu_page('galerie-costum-cos', 'About Plugin', 'About', 'manage_options', 'about','About' );
+    }
+
+ include('history.php');
+ include('stats.php');
+    function About(){
+        ?>
+        <div class="wrap">
+        <h1>About Gallery Editor</h1>
+        <p>If you’re looking for a user friendly and feature rich plugin to add responsive galleries and albums to your website, Photo Gallery plugin,videos can be the best option for you. It’s simple to use yet packed with powerful functionality, allowing you to create anything from simple to complex photo/video galleries. Gallery Editor comes packed with stunning layout options, gallery and album views, multiple widgets that take its functionality even further. WordPress Gallery Editor is a great choice for photography websites and blogs, as well as sites that want to have robust image galleries with easy navigation.</p>
+        </div>
+    <?php
     }
 
 
-function Get_Style_Gallery($in){
-    $return = '<style>
-    @media(max-width:767px) {
-        .css-1qhk0jk {
-            display: block !important;
-        }
-
-        .css-185weec {
-            display: block !important;
-            margin-bottom: 11 px !important;
-        }
-
-        .css-1n59jw8 {
-            display: block !important;
-        }
-
-        .css-1asjrpo {
-            display: block !important;
-            margin-bottom: 0px !important;
-        }
-
-        .css-1w4fwhf {
-            margin-left: 0px !important;
-            margin-top: 11px;
-        }
-
-        .css-bslzp3 {
-            margin-left: 0px !important;
-            margin-top: 11px;
-        }
-
-        .css-bneo1o {
-            display: block !important;
-        }
-        .css-185weec.e939d158 {
-            margin-bottom: 5px !important;
-        }
-        .css-1w4fwhf.e939d159 {
-            margin-bottom: 5px !important;
-        }
-        .css-bslzp3.e939d159 {
-            margin-bottom: 5px !important;
-        }
-    }
-
-    button#next {
-        display: none;
-    }
-
-    button#prev {
-        display: none;
-    }
-
-    .nums>p {
-        display: none;
-    }
-    img#preview-image {
-        height: auto !important;
-    }
-    @font-face {
-        font-family: "FontAwesome";
-        src: url("fonts/fontawesome-webfont.eot?v=4.7.0");
-        src: url("'.plugin_dir_url(__FILE__).'/fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("'.plugin_dir_url(__FILE__).'/fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("'.plugin_dir_url(__FILE__).'/fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("'.plugin_dir_url(__FILE__).'/fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("'.plugin_dir_url(__FILE__).'/fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
-        font-weight: normal;
-        font-style: normal;
-      }
-      .fa {
-        display: inline-block;
-        font: normal normal normal 14px/1 FontAwesome;
-        font-size: inherit;
-        text-rendering: auto;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-      }
-    .fa-undo:before {
-        content: "\f0e2";
-      }
-      .fa-rotate-right:before,
-      .fa-repeat:before {
-        content: "\f01e";
-      }
-      .fa-times-circle:before {
-        content: "\f057";
-      }';
-    if ($in == 0){
-        $return .='
-        #exportlayout:hover{
-            background-color: #eeeeee !important;
-        }
-        #importlayout:hover{
-            background-color: #eeeeee !important; 
-        }
-        #custom-toggler {
-            position: absolute;
-            padding: 1em;
-            font: inherit;
-        }
-
-        #main-color {
-            display: inline-block;
-            border: 4px dashed tomato;
-        }
-
-        #main-color .picker_sample,
-        #main-color .picker_done {
-            display: none;
-        }
-
-        .popup-parent {
-            position: absolute;
-            background: dodgerblue;
-            color: white;
-            padding: 10px 16px;
-            width: 100px;
-            font-family: sans-serif;
-            font-weight: 100;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        @media(max-width: 500px) {
-            .layout_default.picker_wrapper {
-                font-size: 7px;
-            }
-
-            .layout_default .picker_editor {
-                width: 100%;
-            }
-        }
-        .picker_wrapper.layout_default.popup.popup_right {
-            z-index: 9990;
-        }
-        p.shortcode-code {
-           
-            border-radius: 4px;
-            width: fit-content;
-            margin: auto;
-            padding: 0px 8px;
-        }
-        p.shortcode-code:hover{
-            background: #cfcfcf99;
-        }
-        div#ReturnButton:hover {
-            background-color: white !important;
-        }
-        .edit-shortcode-gal {
-            margin-top: 8px;
-            padding: 5px;
-            background-color: #bebebe;
-            text-decoration: none;
-            text-transform: uppercase;
-            border-radius: 6px;
-            border: 1px solid #a7a7a7;
-            color: white;
-        }
-        .edit-shortcode-gal:hover{
-            background-color: white;
-            }
-
-        .shortcodeinput {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
-input.inputshort {
-    width: 100%;
-}
-.preview-shortcode-gal {
-    margin-top: 8px;
-    padding: 5px;
-    background-color: #bebebe;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 6px;
-    border: 1px solid #a7a7a7;
-    color: white;
-}
-.preview-shortcode-gal:hover{
-background-color: white;
-}
-.Youtubecodeinput {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-input.inputyoutube {
-    width: 100%;
-}
-a.edit-youtubecode-gal {
-    margin-top: 8px;
-    padding: 5px;
-    background-color: #bebebe;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 6px;
-    border: 1px solid #a7a7a7;
-    color: white;
-}
-
-a.edit-youtubecode-gal:hover{
-    background-color:white;
-    color:inherit;
-}
-a.preview-youtube-gal {
-    margin-top: 8px;
-    padding: 5px;
-    background-color: #bebebe;
-    text-decoration: none;
-    text-transform: uppercase;
-    border-radius: 6px;
-    border: 1px solid #a7a7a7;
-    color: white;
-}
-
-a.preview-youtube-gal:hover{
-    background-color: white;
-    color:inherit;
-}
-        
-        a#shortCodeAdd:hover {
-            background-color: #eeeeee !important;
-        }
-
-        a#VideoAdd:hover {
-        background-color: #eeeeee !important;
-        }
-        a#youtubeAdd:hover {
-            background-color: #eeeeee !important;
-            }
-        a#ImageAdd:hover {
-        background-color: #eeeeee !important;
-        }
-        .removeWidgetcustomgallery{
-            right: 44%; 
-            left: 44%;
-            z-index:999;
-          }
-        .grid-container {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            padding: 10px;
-            border: 1px solid #c8c8c8;
-            margin-bottom: 13px;
-            border-radius: 23px;
-        }
-        textarea#description {
-            width: 100%;
-            height: 70px;
-        }
-        .grid-item {
-            background-color: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgb(191 191 191 / 80%);
-            padding: 5px;
-            font-size: 15px;
-            text-align: center;
-            margin: 6px;
-            border-radius: 11px;
-            box-shadow: 1px 1px #6a6a6a99;
-        }
-          a#create:hover {
-            background-color: #dbdbdb !important;
-            border: 1px solid #ffffff !important;
-        }
-        label#titleLabel {
-            display: none;
-        }
-        
-        .galleryimageup {
-            display: none !important;
-        }
-        p.submit {
-            display: none;
-        }
-        .item-gallery-grid-edit{
-            float: left;
-            padding: 9px 9px;
-            margin: 9px;
-            background-color: white;
-            border: 1px solid #aeaeae;
-            border-radius: 5px;
-            font-size: 12px;
-            text-decoration: none;
-            text-transform: uppercase;
-            color: unset;
-    }
-    .item-gallery-grid-remove{
-       float: right;
-       padding: 9px 9px;
-       margin: 9px;
-       background-color: white;
-       border: 1px solid #aeaeae;
-       border-radius: 5px;
-       font-size: 12px;
-       text-decoration: none;
-       text-transform: uppercase;
-       color: unset;
-    }
-    .item-gallery-grid-duplicateit{
-        float: left;
-        padding: 9px 9px;
-       margin: 9px;
-       background-color: white;
-       border: 1px solid #aeaeae;
-       border-radius: 5px;
-       font-size: 12px;
-       text-decoration: none;
-       text-transform: uppercase;
-       color: unset;
-    }
-    a.item-gallery-grid-remove:hover {
-        background-color: #eeeeee;
-    }
-    a.item-gallery-grid-edit:hover {
-        background-color: #eeeeee;
-    }
-    a.item-gallery-grid-duplicateit:hover {
-        background-color: #eeeeee;
-    }
-    a#creategalle:hover{
-        background-color: #eeeeee !important;
-    }
-      th{
-          width: 0 !important;
-      }
-      #creategalle {padding: 9px 9px;margin: 9px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;text-align: center;grid-column: none;}
-      
-      .grid-stack-item-content {
-        background-color: #2222221a;
-        cursor: pointer;
-      }
-    
-      .grid-stack-item {
-        margin: 0px;
-      }
-    
-      
-      div[class*=" grid-stack"],div[class^="grid-stack"]>.grid-stack-item>.grid-stack-item-content{
-        overflow-y: hidden !important;
-        }
-        div[class^="grid-stack"] {
-            overflow: hidden;
-        }
-        div#grid-stack0 {
-            border-radius: 8px;
-            background-color: #ffffff00;
-            border: 1px solid #00000036;
-        }
-        div[class*=" grid-stack"],div[class^="grid-stack"]>.grid-stack-item>.ui-resizable-se{
-            background-color: #ffffffd9;
-            border-radius: 14px;
-        }
-        a#addWidget:hover {
-            background-color: #eeeeee !important;
-        }
-        a#ResetWidget:hover {
-            background-color: #eeeeee !important;
-        }
-        @keyframes shake {
-            10%,
-            90% {
-              transform: translate3d(-3px, 0, 0);
-            }
-            20%,
-            80% {
-              transform: translate3d(0px, 0, 0);
-            }
-            30%,
-            50%,
-            70% {
-              transform: translate3d(0px, 0, 0);
-            }
-            40%,
-            60% {
-              transform: translate3d(3px, 0, 0);
-            }
-          }
-          
-          
-          a#addWidget {
-            padding: 5px 9px;
-              margin: 0px;
-              background-color: white;
-              border: 1px solid #aeaeae;
-              border-radius: 5px;
-              font-size: 18px;
-              text-decoration: none;
-              text-transform: uppercase;
-              float: right;
-              animation: shake 3s cubic-bezier(0.36, 0.37, 0.4, 0.41) infinite both;
-              transform: translate3d(0, 0, 0);
-          }
-          }
-      </style>
-    <link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'/image-viewer-lightbox-previewer/src/index.css" />
-    <script src="'.plugin_dir_url(__FILE__).'/image-viewer-lightbox-previewer/dist/img-previewer.min.js"></script>
-    <script src="'.plugin_dir_url(__FILE__).'/assets/js/notify.min.js"></script>
-    <script src="'.plugin_dir_url(__FILE__).'/assets/js/loadingoverlay.min.js"></script>';
-    
-    }else{
-        $return .='div[class*=" grid-stack"],div[class^="grid-stack"]>.grid-stack-item>.grid-stack-item-content{
-            overflow-y: hidden !important;
-            }
-            div[class^="grid-stack"] {
-                overflow: hidden;
-            }
-            div#grid-stack0 {
-                border-radius: 8px;
-                background-color: #ffffff00;
-                border: 1px solid #00000036;
-            }
-            div[class*=" grid-stack"],div[class^="grid-stack"]>.grid-stack-item>.ui-resizable-se{
-                background-color: #ffffff00;
-                border-radius: 14px;
-            }</style>
-        <script src="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack-h5.js"></script>
-        <link href="'.plugin_dir_url(__FILE__).'/node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="'.plugin_dir_url(__FILE__).'/image-viewer-lightbox-previewer/src/index.css" />
-        <script src="'.plugin_dir_url(__FILE__).'/image-viewer-lightbox-previewer/dist/img-previewer.min.js"></script>';
-    }
-    
-return $return;
-}
+include('style-Gallery.php');
 
     function theme_options_page(){
         global $gallery_costum;
      echo Get_Style_Gallery(0);
         ?>
+       <script>
+           var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
+       </script>
 <div class="wrap">
+<div id="myNav" class="overlay">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <div class="infopreview">
+    <p class="titleofthegallery">test of </p>
+<p class="Shortcodeofthegallery">[gallery-editor-V2 id="60f1ab52b188a"]</p></div>
+  <div id="overlay-content" class="overlay-content">
+  </div>
+</div>
     <div id="icon-options-general" class="icon32"></div>
-    <h1>Gallery Editor <b id="Gallerycount" style="border: 1px solid #aaaaaa;border-radius: 7px;padding-right: 5px;font-size: 20px;padding-left: 5px;box-shadow: 1px 1px #898989;"><?php echo count(array_filter($gallery_costum-> get_all(), function($value) { return !is_null($value) && $value !== ''; })); ?></b>
+    <h1 style=" width: 100%; ">Dashboard <b id="Gallerycount" style="border: 1px solid #aaaaaa;border-radius: 7px;padding-right: 5px;font-size: 20px;padding-left: 5px;box-shadow: 1px 1px #898989;"><?php echo count(array_filter($gallery_costum-> get_all(), function($value) { return !is_null($value) && $value !== ''; })); ?></b>
     </h1> <a
         style=" padding: 9px 9px; margin: 9px; background-color: white; border: 1px solid #aeaeae; border-radius: 5px; font-size: 18px; text-decoration: none; text-transform: uppercase; float: right; "
         href="#" id="creategalle">Create New Gallery</a>
@@ -547,23 +146,7 @@ function display_options(){
     //register_setting("header_section", "advertising_code");
 }
 
-
-
-
-
-
-
-
-
-
 include('gallery-preview-function.php');
-
-
-
-
-
-
-
 
 //activation 
 register_activation_hook( __FILE__, array($gallery_costum,'activate') );
@@ -605,10 +188,10 @@ function duplicategallery(){
 
 
 
-add_action("wp_ajax_ping1", "ping1");
+add_action("wp_ajax_manage", "manage");
 
 
-function ping1() {
+function manage() {
     global $imagesArr;
     global $gallery_costum;
     if($_POST['todo'] == 'add'){
@@ -695,15 +278,7 @@ function getgallerybyid(){
 }
 
 
-add_action("wp_ajax_getshortcodeFrom", "getshortcodeFrom");
-function getshortcodeFrom(){
-    $shortcode_string = $_POST['shortcode'];
-    $result = do_shortcode( $shortcode_string );
-    echo $result;
-        // echo json_encode($result);
-   
-    wp_die();
-}
+
 
 add_action("wp_ajax_getgallerybysearch", "getgallerybysearch");
 function getgallerybysearch(){
@@ -992,17 +567,18 @@ function get_gallery($atts)
         }
     }
     
-    $gallery_html = '<div class="grid-stack'.$id.'" id="grid-stack'.$id.'" style="border-radius :'.$result["globalradius"].'px; max-width: '.$result['maxwidth'].'% !important;background-color:'.$result['background'].';" ></div>
+    $gallery_html = '<div class="grid-stack'.$id.'" id="grid-stack'.$id.'" style="border-radius :'.$result["globalradius"].'px; max-width: '.$result['maxwidth'].'% !important;background-color:'.$result['background'].';margin: auto;" ></div>
     <script>
-    let grid'.$id.' = GridStack.init(
+    var grid'.$id.' = GridStack.init(
         {
           minRow: 1,
+          float: true, 
         },
         ".grid-stack'.$id.'"
       )
       var serializedData'.$id.' = '.json_encode($result["images"]).'
       if(document.getElementById("grid-stack'.$id.'").offsetWidth < 769){
-        for (let index32 = 0; index32 < serializedData'.$id.'.length; index32++) {
+        for (var index32 = 0; index32 < serializedData'.$id.'.length; index32++) {
             serializedData'.$id.'[index32]["h"]=1
         }
             }
@@ -1049,3 +625,87 @@ function testofunction(){
 
 
 add_shortcode( 'testof', 'testofunction' );
+
+
+
+
+add_action("wp_ajax_getshortcodeFrom", "getshortcodeFrom");
+function getshortcodeFrom(){
+    $shortcode_string = $_POST['shortcode'];
+    $id = $_POST['id'];
+    if($shortcode_string != ''){
+    $result = do_shortcode( $shortcode_string );
+    echo $result;
+    wp_die();
+}else if ($id != ''){
+    ob_start();
+    global $gallery_costum;
+    try{
+    $result = $gallery_costum->getGalleryByIdPreview($id);
+    $jsonData = stripslashes(html_entity_decode(substr(substr($result, 1), 0, -1)));
+    $result =json_decode($jsonData,true);
+    if($result === NULL){
+        $result = $gallery_costum->getGalleryByIdPreview($id);
+        $result =json_decode($result,true)[0];
+    }
+    for ($i=0; $i < count($result["images"]); $i++) { 
+        $contentprev = $result["images"][$i]['content'];
+        if($result["images"][$i]['content'][0] == '[' && $result["images"][$i]['content'][-1] == ']'){
+            $result["images"][$i]['content'] = do_shortcode( $contentprev );
+        }
+        if(strpos($result["images"][$i]['id'] , 'youtube') !== false ){
+            $result["images"][$i]['content'] = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/'.$contentprev.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        }
+    }
+    
+    $gallery_html = '<div class="grid-stack'.$id.'" id="grid-stack'.$id.'" style="border-radius :'.$result["globalradius"].'px; max-width: '.$result['maxwidth'].'% !important;background-color:'.$result['background'].';margin: auto;" ></div>
+    <script>
+    jQuery(".titleofthegallery").text("'.$result["title"].'");
+    jQuery(".Shortcodeofthegallery").text('."'".'[gallery-editor-V2 id="'.$id.'"]'."'".');
+    var grid'.$id.' = GridStack.init(
+        {
+          minRow: 1,
+          float: true, 
+        },
+        ".grid-stack'.$id.'"
+      )
+      var serializedData'.$id.' = '.json_encode($result["images"]).'
+      if(document.getElementById("grid-stack'.$id.'").offsetWidth < 769){
+        for (var index32 = 0; index32 < serializedData'.$id.'.length; index32++) {
+            serializedData'.$id.'[index32]["h"]=1
+        }
+            }
+      loadGrid'.$id.' = function () {
+        grid'.$id.'.removeAll()
+        grid'.$id.'.load(serializedData'.$id.', true) 
+      }
+      loadGrid'.$id.'()
+      grid'.$id.'.setStatic(true)
+      var items'.$id.' = document.getElementById("grid-stack'.$id.'").getElementsByClassName("grid-stack-item-content");
+      for (var i = 0; i < items'.$id.'.length; i++) {
+        items'.$id.'[i].style.cssText += '."'inset:'+".$result["margin"]."+'px';".';
+        items'.$id.'[i].style.cssText += '."'border-radius:'+".$result["radius"]."+'px;'".';';
+        if($result["bordersetting"]){
+            $gallery_html .=  'if('.$result["bordersetting"]['enabled'].'){
+                items'.$id.'[i].style.cssText += "border:" + '.$result["bordersetting"]['width'].' + "px " + "'.$result["bordersetting"]['style'].'" + " " + "'.$result["bordersetting"]['color'].'" + ";"
+                }';
+        }
+    $gallery_html .='}
+      </script>
+    
+    <script>if('.$result["quick_view_enabled"].'){ const a'.$id.' = new ImgPreviewer("#grid-stack'.$id.'"); }  </script>';
+    }catch (Exception $e) {
+        
+    return 'ERROR !';
+    }
+    if(strpos($_SERVER['REQUEST_URI'], 'preview') == false){
+        
+        echo Get_Style_Gallery(1).$gallery_html;
+        wp_die();
+    } else{
+        echo 'gallery-editor-V2---'.$id;
+        wp_die();
+    }
+    return ob_get_clean();
+}
+}

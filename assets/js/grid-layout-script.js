@@ -272,8 +272,23 @@ saveGrid = function () {
       `onclick="changeVideoGallery(this.parentNode.parentNode.getAttribute('gs-id'))"`,
       ''
     )
+    const parser = new DOMParser();
+    const el = parser.parseFromString(n.content, "text/html");
+    //console.log(el.innerHTML);//.remove();
+    if(el.querySelector('input')){
+      el.querySelector('input').remove();
+    }
+    if(el.querySelector('a')){
+      el.querySelector('a').remove();
+    }
+    if(el.querySelector('button')){
+      el.querySelector('button').remove();
+    }
+    n.content = el.querySelector('body').innerHTML;
   })
   // document.querySelector('#saved-data').value = JSON.stringify(serializedData, null, '  ');
   return serializedData
 }
 loadGrid()
+
+
