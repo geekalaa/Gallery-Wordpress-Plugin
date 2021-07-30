@@ -26,7 +26,7 @@ function display_header_options_content(){
             <!-- First Toolbar -->
             <div id="gallerytoolbar0" style="display:none;padding: 11px; background-color: rgba(197, 197, 197, 0.58); border-top: 1px solid rgb(176, 176, 176); border-right: 1px solid rgb(176, 176, 176); border-left: 1px solid rgb(176, 176, 176); border-image: initial; border-radius: 13px 13px 0px 0px; height: 35px; border-bottom: none;">
             <div id="ReturnButton" style="padding: 6px;background-color: rgba(221, 221, 221, 0.58);border: 1px solid rgb(176, 176, 176);border-radius: 13px;height: 21px;margin: 0px;display: flex;cursor: pointer;float: left;">
-                <img src="https://shareit.topvoce.com/wp-content/plugins/gallery-editor-placeholder-2/assets/left-arrow-return-svgrepo-com.svg" style="width: 16px;"><p style="font-size: 18px;margin-top: -3px;margin-left: 7px;">RETURN</p>
+                <img src="'.plugin_dir_url(__FILE__).'/assets/left-arrow-return-svgrepo-com.svg" style="width: 16px;"><p style="font-size: 18px;margin-top: -3px;margin-left: 7px;">RETURN</p>
             </div>
             <a id="addWidget" class="btn btn-primary" href="#">Add Widget</a>
             <a id="ResetWidget" onclick="clearGridcostum()" class="btn btn-primary" href="#" style="padding: 5px 9px;margin: 0px 5px 0px 0px;background-color: white;border: 1px solid #aeaeae;border-radius: 5px;font-size: 18px;text-decoration: none;text-transform: uppercase;float: right;">Clear !</a>
