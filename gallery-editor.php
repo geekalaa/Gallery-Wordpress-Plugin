@@ -8,17 +8,17 @@
 
 
 /**
- * Plugin Name: Gallery editor V2 beta
- * Description: Modify and manage the gallery of the Home Page
- * Author URI:        https://placeholder.tn/
+ * Plugin Name: Gallery editor V2 
+ * Description: Modify and manage the galleries with layouts
+ * Author URI:        https://www.linkedin.com/in/kaddouralaa/?locale=en_US
  * Text Domain:       plugin-slug
  * License:           GPL v2 or later
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Plugin URI:        https://placeholder.tn/
- * Version: 0.0.1
- * Requires at least:5.7.2
+ * Version: 2.0
+ * Requires at least:5.8.0
  * Requires PHP: 7.4
- * Author: PlaceHolder Inc
+ * Author: Kaddour Alaa
  */
 
 
@@ -67,7 +67,9 @@ function add_new_menu_items(){
         ?>
         <div class="wrap">
         <h1>About Gallery Editor</h1>
-        <p>If you’re looking for a user friendly and feature rich plugin to add responsive galleries and albums to your website, Photo Gallery plugin,videos can be the best option for you. It’s simple to use yet packed with powerful functionality, allowing you to create anything from simple to complex photo/video galleries. Gallery Editor comes packed with stunning layout options, gallery and album views, multiple widgets that take its functionality even further. WordPress Gallery Editor is a great choice for photography websites and blogs, as well as sites that want to have robust image galleries with easy navigation.</p>
+        <p>If you’re looking for a user friendly and feature rich plugin to add responsive galleries and albums to your website, Photo Gallery plugin,videos can be the best option for you. It’s simple to use yet packed with powerful functionality, allowing you to create anything from simple to complex photo/video galleries. Gallery Editor comes packed with stunning layout options, gallery and album views, multiple widgets that take its functionality even further. WordPress Gallery Editor is a great choice for photography websites and blogs, as well as sites that want to have robust image galleries with easy navigation. <br> 
+    <a href="https://placeholder.tn/#!/" target="_blank" alt="PlaceHolder Inc Tunisia">PlaceHolder Inc.</a>
+    </p>
         </div>
     <?php
     }

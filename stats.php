@@ -10,9 +10,10 @@
        $retur = ['post'=>null,'page'=>null];
        global $wpdb;
        //WHERE post_type = 'page' AND post_content LIKE '%".$shortcodetext."%'
-       $retur['post']=$wpdb->get_results("SELECT * FROM wp_posts WHERE post_type = 'post' AND post_content LIKE '%".$shortcodetext."%'");
+       $retur['post']=$wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = 'post' AND post_content LIKE '%".$shortcodetext."%'");
+    //    print_r($retur['post']);
        //array_push($retur,['page'=>$wpdb->get_results("SELECT * FROM wp_posts WHERE post_type = 'page' AND wp_posts.post_content LIKE '%".$shortcodetext."%'")]);
-       $result = $wpdb->get_results("SELECT * FROM wp_posts WHERE post_type = 'page'");
+       $result = $wpdb->get_results("SELECT * FROM $wpdb->posts WHERE post_type = 'page'");
        $pages = [];
        foreach($result as $page ){
 
@@ -74,7 +75,7 @@ tbody.stats {
 </style>
        <div class="wrap">
       <h1>Analytics</h1>
-      <div class="card" style="max-width: 100%;padding: 0px;">
+      <div id="statsdivtr" class="card" style="max-width: 100%;padding: 0px;">
            <div class="card-header">
                <h6>Galleries Shortcodes Usage</h6>
 
@@ -185,9 +186,14 @@ tbody.stats {
 
 
 
-
+<?php echo '<script src="'.plugin_dir_url(__FILE__).'/assets/js/loadingoverlay.min.js"></script>'; ?>
 <script>
-
+ jQuery("#statsdivtr").LoadingOverlay("show", {
+            background: "#797979d9"
+        });
+    setTimeout(function() {
+                        jQuery("#statsdivtr").LoadingOverlay("hide", true);
+                    }, 500);
            var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
     
     document.addEventListener("DOMContentLoaded", function() {

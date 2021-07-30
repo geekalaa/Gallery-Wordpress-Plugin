@@ -211,7 +211,7 @@ tbody.stats {
         });
     setTimeout(function() {
                         jQuery("#historydiv").LoadingOverlay("hide", true);
-                    }, 2000);
+                    }, 500);
            var AjaxUrlGalleryCostum = '<?php echo admin_url('admin-ajax.php') ?>';
     document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('.alignleft').style.display = 'none';
@@ -234,7 +234,7 @@ tbody.stats {
         });
                      setTimeout(function() {
                         location.reload();
-                    }, 2000);
+                    }, 1500);
             },
         })
         });
@@ -261,7 +261,7 @@ tbody.stats {
         });
                      setTimeout(function() {
                         location.reload();
-                    }, 2000);
+                    }, 1500);
             },
         })
         });
