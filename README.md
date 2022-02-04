@@ -1,7 +1,7 @@
 # Gallery-Wordpress-Plugin
-A Simple Wordpress plugin to Create ,Modify and manage Gallery in Wordpress , You can create any layout you want with some customization .
+A Wordpress plugin to Create ,Modify and manage Gallery in Wordpress , You can create any layout you want with some customization .
 # What you can add in a Gallery ?
-Basically you can add 3 type of layout in your Gallery
+Basically you can add 4 types of layouts in your Gallery
   - An image
   - A video
   - A Youtube Video (id of the video)
